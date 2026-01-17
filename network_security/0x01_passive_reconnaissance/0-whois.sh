@@ -1,2 +1,48 @@
 #!/bin/bash
-whois "$1" | awk -F: '/^Registrant Name/{print "Registrant Name,"$2}/^Registrant Organization/{print "Registrant Organization,"$2}/^Registrant Street/{print "Registrant Street,"$2" "}/^Registrant City/{print "Registrant City,"$2}/^Registrant State\/Province/{print "Registrant State/Province,"$2}/^Registrant Postal Code/{print "Registrant Postal Code,"$2}/^Registrant Country/{print "Registrant Country,"$2}/^Registrant Phone$/{print "Registrant Phone,"$2}/^Registrant Phone Ext/{print "Registrant Phone Ext:, "}/^Registrant Fax$/{print "Registrant Fax, "}/^Registrant Fax Ext/{print "Registrant Fax Ext:, "}/^Registrant Email/{print "Registrant Email,"$2}/^Admin Name/{print "Admin Name,"$2}/^Admin Organization/{print "Admin Organization,"$2}/^Admin Street/{print "Admin Street,"$2" "}/^Admin City/{print "Admin City,"$2}/^Admin State\/Province/{print "Admin State/Province,"$2}/^Admin Postal Code/{print "Admin Postal Code,"$2}/^Admin Country/{print "Admin Country,"$2}/^Admin Phone$/{print "Admin Phone,"$2}/^Admin Phone Ext/{print "Admin Phone Ext:, "}/^Admin Fax$/{print "Admin Fax, "}/^Admin Fax Ext/{print "Admin Fax Ext:, "}/^Admin Email/{print "Admin Email,"$2}/^Tech Name/{print "Tech Name,"$2}/^Tech Organization/{print "Tech Organization,"$2}/^Tech Street/{print "Tech Street,"$2" "}/^Tech City/{print "Tech City,"$2}/^Tech State\/Province/{print "Tech State/Province,"$2}/^Tech Postal Code/{print "Tech Postal Code,"$2}/^Tech Country/{print "Tech Country,"$2}/^Tech Phone$/{print "Tech Phone,"$2}/^Tech Phone Ext/{print "Tech Phone Ext:, "}/^Tech Fax$/{print "Tech Fax, "}/^Tech Fax Ext/{print "Tech Fax Ext:, "}/^Tech Email/{print "Tech Email,"$2}' > "$1.csv"
+
+DOMAIN="$1"
+
+whois "$DOMAIN" | awk -F: '
+BEGIN {
+    OFS=","
+}
+
+/^Registrant Name/        {print "RegistrantName",$2}
+/^Registrant Organization/{print "RegistrantOrganization",$2}
+/^Registrant Street/      {print "RegistrantStreet",$2" "}
+/^Registrant City/        {print "RegistrantCity",$2}
+/^Registrant State\/Province/ {print "RegistrantState/Province",$2}
+/^Registrant Postal Code/ {print "RegistrantPostalPostalCode",$2}
+/^Registrant Country/     {print "RegistrantCountry",$2}
+/^Registrant Phone/ && !/Ext/ {print "RegistrantPhone",$2}
+/^Registrant Phone Ext/   {print "RegistrantPhonePhoneExt:",$2}
+/^Registrant Fax/ && !/Ext/ {print "RegistrantFax",$2}
+/^Registrant Fax Ext/     {print "RegistrantFaxFaxExt:",$2}
+/^Registrant Email/       {print "RegistrantEmail",$2}
+
+/^Admin Name/              {print "AdminName",$2}
+/^Admin Organization/      {print "AdminOrganization",$2}
+/^Admin Street/            {print "AdminStreet",$2" "}
+/^Admin City/              {print "AdminCity",$2}
+/^Admin State\/Province/   {print "AdminState/Province",$2}
+/^Admin Postal Code/       {print "AdminPostalPostalCode",$2}
+/^Admin Country/           {print "AdminCountry",$2}
+/^Admin Phone/ && !/Ext/   {print "AdminPhone",$2}
+/^Admin Phone Ext/         {print "AdminPhonePhoneExt:",$2}
+/^Admin Fax/ && !/Ext/     {print "AdminFax",$2}
+/^Admin Fax Ext/           {print "AdminFaxFaxExt:",$2}
+/^Admin Email/             {print "AdminEmail",$2}
+
+/^Tech Name/              {print "TechName",$2}
+/^Tech Organization/      {print "TechOrganization",$2}
+/^Tech Street/            {print "TechStreet",$2" "}
+/^Tech City/              {print "TechCity",$2}
+/^Tech State\/Province/   {print "TechState/Province",$2}
+/^Tech Postal Code/       {print "TechPostalPostalCode",$2}
+/^Tech Country/           {print "TechCountry",$2}
+/^Tech Phone/ && !/Ext/   {print "TechPhone",$2}
+/^Tech Phone Ext/         {print "TechPhonePhoneExt:",$2}
+/^Tech Fax/ && !/Ext/     {print "TechFax",$2}
+/^Tech Fax Ext/           {print "TechFaxFaxExt:",$2}
+/^Tech Email/             {print "TechEmail",$2}
+' > "$DOMAIN.csv"
