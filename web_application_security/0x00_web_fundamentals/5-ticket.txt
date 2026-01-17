@@ -1,4 +1,4 @@
-GET /ticket?id=4 HTTP/1.1
+GET /ticket?id=1 HTTP/1.1
 Host: web0x00.hbtn
 User-Agent: Mozilla/5.0
 Accept: text/html
