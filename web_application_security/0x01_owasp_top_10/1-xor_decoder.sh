@@ -14,16 +14,20 @@ CLEAN_HASH="${HASH#\{xor\}}"
 # Base64 decode
 DECODED=$(echo "$CLEAN_HASH" | base64 -d 2>/dev/null)
 
-# XOR key used by WebSphere
-KEY=90  # 0x5A
+# XOR key used by WebSphere (0x5A)
+KEY=90
 
-# XOR decode byte by byte
 RESULT=""
 
+# XOR decode byte by byte (binary safe)
 for (( i=0; i<${#DECODED}; i++ )); do
-    BYTE=$(printf "%d" "'${DECODED:$i:1}")
+    CHAR="${DECODED:$i:1}"
+    BYTE=$(printf '%d' "'$CHAR")
     XOR_BYTE=$(( BYTE ^ KEY ))
-    RESULT+=$(printf "\\x%02x" "$XOR_BYTE")
+
+    # Convert number back to character safely
+    printf -v OUT_CHAR '\\x%02x' "$XOR_BYTE"
+    RESULT+="$OUT_CHAR"
 done
 
 echo -e "$RESULT"
