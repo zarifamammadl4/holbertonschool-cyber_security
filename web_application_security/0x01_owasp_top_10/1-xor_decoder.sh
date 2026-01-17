@@ -15,7 +15,7 @@ CLEAN_HASH="${HASH#\{xor\}}"
 DECODED=$(echo "$CLEAN_HASH" | base64 -d 2>/dev/null)
 
 # XOR key used by WebSphere
-KEY=90  # 0x5A in decimal
+KEY=90  # 0x5A
 
 # XOR decode byte by byte
 RESULT=""
@@ -26,5 +26,4 @@ for (( i=0; i<${#DECODED}; i++ )); do
     RESULT+=$(printf "\\x%02x" "$XOR_BYTE")
 done
 
-# Print result
 echo -e "$RESULT"
