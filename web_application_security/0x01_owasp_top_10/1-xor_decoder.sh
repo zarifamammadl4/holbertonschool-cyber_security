@@ -28,4 +28,3 @@ done
 
 # Print result
 echo -e "$RESULT"
-
